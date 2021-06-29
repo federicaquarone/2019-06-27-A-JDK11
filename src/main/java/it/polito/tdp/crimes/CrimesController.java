@@ -7,6 +7,7 @@ package it.polito.tdp.crimes;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import it.polito.tdp.crimes.model.Arco;
 import it.polito.tdp.crimes.model.Model;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -25,10 +26,10 @@ public class CrimesController {
     private URL location;
 
     @FXML // fx:id="boxCategoria"
-    private ComboBox<?> boxCategoria; // Value injected by FXMLLoader
+    private ComboBox<String> boxCategoria; // Value injected by FXMLLoader
 
     @FXML // fx:id="boxAnno"
-    private ComboBox<?> boxAnno; // Value injected by FXMLLoader
+    private ComboBox<Integer> boxAnno; // Value injected by FXMLLoader
 
     @FXML // fx:id="btnAnalisi"
     private Button btnAnalisi; // Value injected by FXMLLoader
@@ -45,13 +46,24 @@ public class CrimesController {
     @FXML
     void doCreaGrafo(ActionEvent event) {
     	txtResult.clear();
-    	txtResult.appendText("Crea grafo...\n");
+    	String categoria= boxCategoria.getValue();
+    	int anno=boxAnno.getValue();
+    	model.creaGrafo(categoria, anno);
+    	txtResult.appendText("GRAFO CREATO: \n");
+    	txtResult.appendText("#VERTICI: "+ model.getNVertici()+"\n");
+    	txtResult.appendText("#ARCHI: "+model.getNArchi()+"\n");
+    	
+    	txtResult.appendText("ARCHI DI PESO MASSIMO: \n");
+    	for(Arco a: model.getArchiPeso(anno,categoria)) {
+    		txtResult.appendText("Vertice v1:"+a.getE1()+" VS vertice v2: "+a.getE2()+", peso:"+a.getPeso()+"\n");
+    	}
+    	
     }
 
     @FXML
     void doCalcolaPercorso(ActionEvent event) {
     	txtResult.clear();
-    	txtResult.appendText("Calcola percorso...\n");
+    	txtResult.appendText("");
     }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
@@ -67,5 +79,7 @@ public class CrimesController {
     
     public void setModel(Model model) {
     	this.model = model;
+    	this.boxCategoria.getItems().addAll(model.getCategorie());
+    	this.boxAnno.getItems().addAll(model.getAnno());
     }
 }
