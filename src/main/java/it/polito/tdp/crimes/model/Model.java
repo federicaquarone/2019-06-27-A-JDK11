@@ -65,4 +65,19 @@ public class Model {
 		return migliore;
 	}
 		
+	public String migliore() {
+		String s="";
+		double pesomax=0.0;
+		for(DefaultWeightedEdge e: grafo.edgeSet()) {
+			if(grafo.getEdgeWeight(e)>pesomax) {
+				pesomax=grafo.getEdgeWeight(e);
+			}
+		}
+		for(DefaultWeightedEdge ed: grafo.edgeSet()) {
+			if(grafo.getEdgeWeight(ed)==pesomax) {
+				s=grafo.getEdgeSource(ed)+" "+ grafo.getEdgeTarget(ed)+" "+grafo.getEdgeWeight(ed)+"\n";
+			}
+		}
+		return s;
+	}
 }
